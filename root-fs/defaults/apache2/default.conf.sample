@@ -1,0 +1,22 @@
+<VirtualHost *:80>
+  <Directory /home/abc/public_html>
+    Options -Indexes +FollowSymLinks
+    AllowOverride All
+    Require all granted
+    AddHandler application/x-httpd-php81 .php .php7 .phtml
+  </Directory>
+
+  ServerAdmin webmaster@localhost
+  DocumentRoot /home/abc/public_html
+  DirectoryIndex index.php index.html
+
+  # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+  # error, crit, alert, emerg.
+  # It is also possible to configure the loglevel for particular
+  # modules, e.g.
+  #LogLevel info ssl:warn
+
+  CustomLog /home/abc/logs/apache/access.log combined
+</VirtualHost>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet

@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+PUID=${PUID:-1000}
+PGID=${PGID:-1000}
+
+groupmod -o -g "$PGID" abc
+usermod -o -u "$PUID" abc
+
+echo "
+----------------------
+GID/UID
+----------------------
+User uid:    $(id -u abc)
+User gid:    $(id -g abc)
+----------------------
+"
+
+WORK_DIR=/home/abc
+CONFIG_DIR=$WORK_DIR/config
+
+mkdir -p \
+  $CONFIG_DIR/{ssl,sites-enabled} \
+  $WORK_DIR/logs/{apache,php} \
+  $WORK_DIR/{public_html,tmp} \
+  /var/run/apache2
+
+
+chown -R abc:abc \
+  $WORK_DIR \
+  $CONFIG_DIR \
+  /var/run/apache2
+
+chmod -R g+rw \
+  $WORK_DIR \
+  $CONFIG_DIR
+
+# Copy the default config file if they don't exist
+find $CONFIG_DIR/sites-enabled -maxdepth 0 -empty \
+  -exec cp /defaults/apache2/default.conf.sample $CONFIG_DIR/sites-enabled/default.conf \;
+
+# Update Timezone
+export TZ=${TZ:-"Europe/Berlin"}
+echo "$TZ" >  /etc/timezone
+# apparently not necessary, PHP seems to use the system time
+# echo -e "[global]\ndate.timezone=$TZ\n" > /etc/php/conf.d/timezone.ini
+
+
+#######
+# Generating random keys for self signed ssl
+#######
+SSL_PATH=$CONFIG_DIR/ssl
+if [[ ! -f $SSL_PATH/cert.key && ! -f $SSL_PATH/cert.crt ]]; then
+  SUBJECT="/C=DE/ST=BE/L=Berlin/O=Carlos Gomes/OU=CG Server/CN=*"
+  echo "Generating self-signed keys in /config/keys, you can replace these with your own keys if required"
+  openssl req -new -x509 -days 3650 -nodes -out $SSL_PATH/cert.crt -keyout $SSL_PATH/cert.key -subj "$SUBJECT"
+  chown -Rv abc:abc $SSL_PATH
+fi
+
+# copy pre-generated dhparams
+if [[ ! -f $SSL_PATH/dhparams.pem ]]; then
+    cp /defaults/ssl/dhparams.pem.sample $SSL_PATH/dhparams.pem
+    chown -R abc:abc $SSL_PATH/dhparams.pem
+fi
+
+#######
+# Executing the services
+#######
+
+## enable job control
+set -m
+
+su abc -ps /bin/bash -c "apachectl -D FOREGROUND" &
+
+if [ -z "$@" ]; then
+  fg %1
+else
+  "$@"
+fi
