@@ -25,8 +25,8 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./build/public:/app/public
-      - ./config:/home/acb/config
+      - ./build/public:/home/abc/public_html
+      - ./config:/home/abc/config
     environment:
       - PUID=1000
       - PGID=1000
@@ -43,6 +43,8 @@ services:
 
 /home/abc/
 |-- config/
+|     |-- init.d/
+|     |     `-- *.sh
 |     |-- sites-enabled/
 |     |     `-- *.conf
 |     `-- ssl/

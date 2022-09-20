@@ -21,7 +21,7 @@ WORK_DIR=/home/abc
 CONFIG_DIR=$WORK_DIR/config
 
 mkdir -p \
-  $CONFIG_DIR/{ssl,sites-enabled} \
+  $CONFIG_DIR/{ssl,sites-enabled,init.d} \
   $WORK_DIR/logs/{apache,php} \
   $WORK_DIR/{public_html,tmp} \
   /var/run/apache2
@@ -63,6 +63,25 @@ if [[ ! -f $SSL_PATH/dhparams.pem ]]; then
     cp /defaults/ssl/dhparams.pem.sample $SSL_PATH/dhparams.pem
     chown -R abc:abc $SSL_PATH/dhparams.pem
 fi
+
+#######
+# Run init scripts
+#######
+
+for f in $CONFIG_DIR/init.d/*.sh; do
+  if [ -f "$f" ]; then
+    echo "running: $f"
+    bash $f
+  else
+    echo "not a file: $f"
+  fi
+done
+
+echo "
+----------------------
+
+"
+
 
 #######
 # Executing the services
