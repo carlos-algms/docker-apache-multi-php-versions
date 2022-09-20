@@ -1,4 +1,4 @@
-<VirtualHost *:80>
+<VirtualHost *:8080>
   <Directory /home/abc/public_html>
     Options -Indexes +FollowSymLinks
     AllowOverride All
