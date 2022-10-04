@@ -133,6 +133,10 @@ RUN \
       http2 \
       headers \
       expires \
+      proxy \
+      proxy_balancer \
+      proxy_http \
+      proxy_http2 \
     && a2dissite \
       000-default.conf \
     && a2disconf \
@@ -143,6 +147,13 @@ RUN \
 # add local files
 COPY root-fs/ /
 
+# Linking the PHP shared ini files to multiple PHP installations
+RUN \
+  for p in /etc/php/*/cgi/conf.d; do \
+    for i in /defaults/php-shared/*.ini; do \
+        ln -sf $i $p; \
+    done; \
+  done;
 
 WORKDIR /home/abc
 
