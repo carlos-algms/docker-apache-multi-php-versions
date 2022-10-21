@@ -19,22 +19,23 @@ User gid:    $(id -g abc)
 
 WORK_DIR=/home/abc
 CONFIG_DIR=$WORK_DIR/config
+LOGS_DIR=$WORK_DIR/logs
 
 mkdir -p \
   $CONFIG_DIR/{ssl,sites-enabled,init.d} \
-  $WORK_DIR/logs/{apache,php} \
+  $LOGS_DIR/{apache,php} \
   $WORK_DIR/{public_html,tmp} \
   /var/run/apache2
 
 
 chown -R abc:abc \
-  $WORK_DIR \
   $CONFIG_DIR \
+  $LOGS_DIR \
   /var/run/apache2
 
 chmod -R g+rw \
-  $WORK_DIR \
-  $CONFIG_DIR
+  $CONFIG_DIR \
+  $LOGS_DIR
 
 # Copy the default config file if they don't exist
 find $CONFIG_DIR/sites-enabled -maxdepth 0 -empty \
