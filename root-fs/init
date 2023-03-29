@@ -68,15 +68,21 @@ fi
 #######
 # Run init scripts
 #######
+# using the "find" alternative below, as it breaks if the folder is empty
+# for f in $CONFIG_DIR/init.d/*.sh; do
+#   if [ -f "$f" ]; then
+#     echo "running: $f"
+#     bash $f
+#   else
+#     echo "not a file: $f"
+#   fi
+# done
 
-for f in $CONFIG_DIR/init.d/*.sh; do
-  if [ -f "$f" ]; then
-    echo "running: $f"
-    bash $f
-  else
-    echo "not a file: $f"
-  fi
-done
+find /home/abc/config/init.d \
+  -name "*.sh" \
+  -type f \
+  -exec echo "running: {}" \; \
+  -exec sh {} \;
 
 echo "
 ----------------------

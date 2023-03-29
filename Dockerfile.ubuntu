@@ -106,7 +106,8 @@ RUN \
 
 
 # https://getcomposer.org/download/
-ARG COMPOSER_VERSION="2.4.1"
+# this is the latest version supporting php7.1
+ARG COMPOSER_VERSION="2.2.21"
 
 RUN \
   curl "https://getcomposer.org/installer" --output "composer-setup.php" \
@@ -143,6 +144,9 @@ RUN \
       other-vhosts-access-log.conf \
     && sed -i 's/www-data/abc/g' /etc/apache2/envvars
 
+# Setting php7.1 as the main one, as we only use this image with it for now
+# it also breaks composer if using other version
+RUN update-alternatives --set php /usr/bin/php7.1
 
 # add local files
 COPY root-fs/ /

@@ -3,8 +3,7 @@ IMAGE=carlosalgms/docker-apache-multi-php-versions
 LATEST=jammy
 TAG?=$(LATEST)
 FROM_IMAGE?=ubuntu:jammy
-EXTRA_REPO?="3.7"
-COMPOSER_VERSION?="2.4.1"
+COMPOSER_VERSION?="2.2.21"
 
 
 # Cache the previous build to leverage Docker's layer feature
@@ -19,7 +18,6 @@ docker buildx build --rm . \
 	--build-arg VERSION=$(TAG) \
 	--build-arg BUILD_DATE="$(shell date)" \
 	--build-arg FROM_IMAGE=$(FROM_IMAGE) \
-	--build-arg EXTRA_REPO="$(EXTRA_REPO)" \
 	--build-arg COMPOSER_VERSION="$(COMPOSER_VERSION)" \
 	-f Dockerfile.ubuntu
 endef
