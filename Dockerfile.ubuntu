@@ -15,7 +15,7 @@ RUN \
     apt-transport-https \
     ca-certificates \
     curl \
-    curl \
+    git \
     gpg-agent \
     htop \
     lsb-release \
