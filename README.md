@@ -41,6 +41,7 @@ services:
 
 ## Customize
 
+```
 /home/abc/
 |-- config/
 |     |-- init.d/
@@ -53,3 +54,4 @@ services:
 |     `-- php/
 |-- public_html/
 `-- tmp/
+```
