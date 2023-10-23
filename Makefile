@@ -3,7 +3,7 @@ IMAGE=carlosalgms/docker-apache-multi-php-versions
 LATEST=jammy
 TAG?=$(LATEST)
 FROM_IMAGE?=ubuntu:jammy
-COMPOSER_VERSION?="2.2.21"
+COMPOSER_VERSION?="latest-2.2.x"
 
 
 # Cache the previous build to leverage Docker's layer feature
