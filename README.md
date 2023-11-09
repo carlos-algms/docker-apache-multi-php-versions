@@ -1,11 +1,11 @@
 # docker-apache-multi-php-versions
 A docker image running Apache with multiple PHP versions
 
-This is not a production ready image, it was created to replicate the usual PHP Hosting environment
+This is not a production ready image, it was created to replicate the usual PHP Shared Hosting environment
 
 #### What is Included? 
 * Apache2
-* PHP 8 and PHP 7.1
+* PHP 8, 7.4, and 7.1
 * XDebug
 
 ## How to use
