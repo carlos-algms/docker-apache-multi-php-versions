@@ -40,6 +40,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          file: ./Dockerfile.ubuntu
           pull: true
           push: true
           platforms: linux/amd64,linux/arm64
