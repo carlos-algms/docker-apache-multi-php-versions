@@ -21,6 +21,7 @@ RUN \
     iputils-ping \
     lsb-release \
     make \
+    mysql-client \
     openssl \
     software-properties-common \
     tini \
